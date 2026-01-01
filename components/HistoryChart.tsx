@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { HistoryItem } from '../types';
@@ -18,31 +17,39 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data }) => {
   }));
 
   return (
-    <div className="w-full h-64 bg-slate-900/50 rounded-2xl p-4 border border-slate-800">
-      <h3 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4">Speed History</h3>
+    // Updated classes: bg-card, border-border, border-2
+    <div className="w-full h-64 bg-card border-2 border-border rounded-xl p-4 hover:border-primary/20 transition-colors">
+      <h3 className="text-secondary text-xs font-bold uppercase tracking-wider mb-4">Speed History</h3>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+          {/* Grid color set to border variable opacity */}
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(141, 150, 160, 0.2)" vertical={false} />
           <XAxis 
             dataKey="time" 
-            stroke="#64748b" 
+            stroke="#6b7280" 
             fontSize={10} 
             tickLine={false}
             axisLine={false}
           />
           <YAxis 
-            stroke="#64748b" 
+            stroke="#6b7280" 
             fontSize={10} 
             tickLine={false}
             axisLine={false}
           />
           <Tooltip 
-            contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', fontSize: '12px', color: '#f8fafc' }}
+            contentStyle={{ 
+              backgroundColor: 'rgb(var(--surface))', 
+              border: '1px solid rgb(var(--border))', 
+              borderRadius: '8px', 
+              fontSize: '12px', 
+              color: 'rgb(var(--primary))' 
+            }}
             itemStyle={{ padding: '2px 0' }}
           />
           <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
-          <Line type="monotone" dataKey="Download" stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-          <Line type="monotone" dataKey="Upload" stroke="#ec4899" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+          <Line type="monotone" dataKey="Download" stroke="#818cf8" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+          <Line type="monotone" dataKey="Upload" stroke="#f472b6" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>
