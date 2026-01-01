@@ -17,12 +17,11 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data }) => {
   }));
 
   return (
-    // Updated classes: bg-card, border-border, border-2
-    <div className="w-full h-64 bg-card border-2 border-border rounded-xl p-4 hover:border-primary/20 transition-colors">
+    // Changed h-64 to h-full min-h-[16rem] to match Grid items
+    <div className="w-full h-full min-h-[16rem] bg-card border-2 border-border rounded-xl p-4 hover:border-primary/20 transition-colors">
       <h3 className="text-secondary text-xs font-bold uppercase tracking-wider mb-4">Speed History</h3>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <LineChart data={chartData}>
-          {/* Grid color set to border variable opacity */}
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(141, 150, 160, 0.2)" vertical={false} />
           <XAxis 
             dataKey="time" 

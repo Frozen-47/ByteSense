@@ -81,7 +81,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col items-center py-12 px-4 bg-background">
+    <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center py-12 px-4 bg-background">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full gradient-blur pointer-events-none opacity-40" />
 
@@ -138,16 +138,14 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Results Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
+          {/* Results Grid - Centered Alignment */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {/* Ping */}
-            <div className={`p-6 rounded-3xl border-2 transition-all duration-500 ${phase === TestPhase.PING ? 'bg-surface border-primary/50' : 'bg-surface/30 border-border'}`}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-surface p-2 rounded-lg text-secondary border border-border">
-                  <Activity className="w-5 h-5" />
-                </div>
-                <span className="text-secondary font-bold text-xs uppercase tracking-widest">Ping</span>
+            <div className={`p-6 rounded-3xl border-2 transition-all duration-500 flex flex-col items-center justify-center text-center ${phase === TestPhase.PING ? 'bg-surface border-primary/50' : 'bg-surface/30 border-border'}`}>
+              <div className="bg-surface p-3 rounded-xl text-secondary border border-border mb-4 shadow-sm">
+                <Activity className="w-5 h-5" />
               </div>
+              <span className="text-secondary font-bold text-xs uppercase tracking-widest mb-1">Ping</span>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-primary">
                   {results?.ping ?? (phase === TestPhase.PING ? '-' : '0')}
@@ -157,13 +155,11 @@ const App: React.FC = () => {
             </div>
 
             {/* Download */}
-            <div className={`p-6 rounded-3xl border-2 transition-all duration-500 ${phase === TestPhase.DOWNLOAD ? 'bg-surface border-primary/50' : 'bg-surface/30 border-border'}`}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-surface p-2 rounded-lg text-secondary border border-border">
-                  <Download className="w-5 h-5" />
-                </div>
-                <span className="text-secondary font-bold text-xs uppercase tracking-widest">Download</span>
+            <div className={`p-6 rounded-3xl border-2 transition-all duration-500 flex flex-col items-center justify-center text-center ${phase === TestPhase.DOWNLOAD ? 'bg-surface border-primary/50' : 'bg-surface/30 border-border'}`}>
+              <div className="bg-surface p-3 rounded-xl text-secondary border border-border mb-4 shadow-sm">
+                <Download className="w-5 h-5" />
               </div>
+              <span className="text-secondary font-bold text-xs uppercase tracking-widest mb-1">Download</span>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-primary">
                   {results?.download ?? (phase === TestPhase.DOWNLOAD ? currentSpeed.toFixed(1) : '0')}
@@ -173,13 +169,11 @@ const App: React.FC = () => {
             </div>
 
             {/* Upload */}
-            <div className={`p-6 rounded-3xl border-2 transition-all duration-500 ${phase === TestPhase.UPLOAD ? 'bg-surface border-primary/50' : 'bg-surface/30 border-border'}`}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-surface p-2 rounded-lg text-secondary border border-border">
-                  <Upload className="w-5 h-5" />
-                </div>
-                <span className="text-secondary font-bold text-xs uppercase tracking-widest">Upload</span>
+            <div className={`p-6 rounded-3xl border-2 transition-all duration-500 flex flex-col items-center justify-center text-center ${phase === TestPhase.UPLOAD ? 'bg-surface border-primary/50' : 'bg-surface/30 border-border'}`}>
+              <div className="bg-surface p-3 rounded-xl text-secondary border border-border mb-4 shadow-sm">
+                <Upload className="w-5 h-5" />
               </div>
+              <span className="text-secondary font-bold text-xs uppercase tracking-widest mb-1">Upload</span>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-primary">
                   {results?.upload ?? (phase === TestPhase.UPLOAD ? currentSpeed.toFixed(1) : '0')}
@@ -194,7 +188,7 @@ const App: React.FC = () => {
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <HistoryChart data={history} />
           
-          <div className="bg-card border-2 border-border rounded-xl p-6 flex flex-col justify-between hover:border-primary/20 transition-colors">
+          <div className="bg-card border-2 border-border rounded-xl p-6 flex flex-col justify-between hover:border-primary/20 transition-colors h-full min-h-[16rem]">
              <div>
                <div className="flex items-center gap-2 mb-4">
                   <Info className="w-4 h-4 text-secondary" />

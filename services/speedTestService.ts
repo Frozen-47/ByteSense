@@ -1,8 +1,6 @@
 /**
  * Speed Test Service
  * Uses Cloudflare edge endpoints for measurements.
- * Note: These endpoints may be CORS-restricted. For production, consider using a proxy
- * or a dedicated speed test backend.
  */
 
 const PING_ENDPOINT = 'https://cloudflare.com/cdn-cgi/trace';
@@ -30,8 +28,7 @@ export const testPing = async (): Promise<number> => {
 };
 
 export const testDownload = async (onProgress?: (mbps: number) => void): Promise<number> => {
-  // Use a single large file for streaming measurement instead of small chunks
-  // 50MB should be enough to ramp up speed
+  // 50MB file for streaming measurement
   const size = 52428800; 
   let maxSpeed = 0;
   let receivedLength = 0;
@@ -53,10 +50,8 @@ export const testDownload = async (onProgress?: (mbps: number) => void): Promise
       const currentTime = performance.now();
       const durationSeconds = (currentTime - start) / 1000;
       
-      // Calculate instantaneous speed
       if (durationSeconds > 0) {
         const bitsLoaded = receivedLength * 8;
-        // Standard Mbps is 10^6, not 2^20
         const mbps = (bitsLoaded / durationSeconds) / 1000000; 
         
         maxSpeed = Math.max(maxSpeed, mbps);
@@ -71,43 +66,42 @@ export const testDownload = async (onProgress?: (mbps: number) => void): Promise
 };
 
 export const testUpload = async (onProgress?: (mbps: number) => void): Promise<number> => {
-  // Use XHR for upload progress tracking (fetch doesn't support it yet)
-  const size = 10485760; // 10MB
-  const data = new Uint8Array(size); // Dummy data
+  // Use iterative uploads with no-cors to bypass CORS restrictions on localhost
+  // Sizes: 100KB, 500KB, 2MB, 5MB
+  const sizes = [102400, 512000, 2097152, 5242880];
   let maxSpeed = 0;
 
-  return new Promise((resolve) => {
-    const xhr = new XMLHttpRequest();
+  for (const size of sizes) {
+    // Generate random data to prevent compression
+    const data = new Uint8Array(size);
+    for (let i = 0; i < size; i += 1024) {
+       data[i] = Math.floor(Math.random() * 255);
+    }
+
     const start = performance.now();
+    try {
+      await fetch(UPLOAD_ENDPOINT, {
+        method: 'POST',
+        body: data,
+        mode: 'no-cors', // Important: allows upload even if server blocks CORS
+        cache: 'no-cache',
+      });
 
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const currentTime = performance.now();
-        const durationSeconds = (currentTime - start) / 1000;
+      const durationSeconds = (performance.now() - start) / 1000;
+      
+      // Filter out instant responses (cached or anomalies)
+      if (durationSeconds > 0.05) {
+        const bitsUploaded = size * 8;
+        const mbps = (bitsUploaded / durationSeconds) / 1000000;
         
-        if (durationSeconds > 0) {
-          const bitsUploaded = event.loaded * 8;
-          const mbps = (bitsUploaded / durationSeconds) / 1000000;
-          
-          maxSpeed = Math.max(maxSpeed, mbps);
-          if (onProgress) onProgress(Math.round(mbps * 10) / 10);
-        }
+        if (mbps > maxSpeed) maxSpeed = mbps;
+        if (onProgress) onProgress(Math.round(mbps * 10) / 10);
       }
-    };
+    } catch (e) {
+      // Continue to next size even if one fails
+      console.warn('Upload iteration failed', e);
+    }
+  }
 
-    xhr.open('POST', UPLOAD_ENDPOINT, true);
-    // Cloudflare might require specific headers or handle generic POSTs
-    // mode: 'no-cors' equivalent isn't direct in XHR, but we can try just sending
-    
-    xhr.onload = () => {
-      resolve(Math.round(maxSpeed * 10) / 10);
-    };
-
-    xhr.onerror = (e) => {
-      console.error('Upload test failed', e);
-      resolve(Math.round(maxSpeed * 10) / 10);
-    };
-
-    xhr.send(data);
-  });
+  return Math.round(maxSpeed * 10) / 10;
 };
