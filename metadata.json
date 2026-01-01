@@ -1,0 +1,6 @@
+
+{
+  "name": "Bytesense",
+  "description": "A high-performance internet speed testing tool built with React and Tailwind CSS. Features real-time measurements for ping, download, and upload speeds using Cloudflare's edge network infrastructure.",
+  "requestFramePermissions": []
+}
