@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet" />
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -15,20 +15,16 @@
         darkMode: 'class',
         theme: {
           extend: {
-            fontFamily: { sans: ['Poppins', 'sans-serif'] },
+            fontFamily: { sans: ['Montserrat', 'sans-serif'] },
             colors: {
-              background: 'rgb(var(--background) / <alpha-value>)',
-              card: 'rgb(var(--card) / <alpha-value>)',
-              surface: 'rgb(var(--surface) / <alpha-value>)',
-              border: 'rgb(var(--border) / <alpha-value>)',
-              primary: 'rgb(var(--primary) / <alpha-value>)',
-              secondary: 'rgb(var(--secondary) / <alpha-value>)',
-              muted: 'rgb(var(--muted) / <alpha-value>)',
-              success: '#1a7f37',
-              successDot: '#10b981',
-            },
-            animation: {
-              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              background: 'var(--background)',
+              card: 'var(--card)',
+              primary: 'var(--primary)',
+              secondary: 'var(--secondary)',
+              border: 'var(--border)',
+              accent: 'var(--accent)', 
+              upload: 'var(--upload)',
+              ping: 'var(--ping)',
             }
           }
         }
@@ -37,34 +33,25 @@
 
     <style>
       :root {
-        --background: 249 250 251;
-        --card: 255 255 255;
-        --surface: 243 244 246;
-        --border: 229 231 235;
-        --primary: 17 24 39;
-        --secondary: 75 85 99;
-        --muted: 107 114 128;
-      }
-
-      .dark {
-        --background: 0 0 0;
-        --card: 0 0 0;
-        --surface: 33 38 45;
-        --border: 48 54 61;
-        --primary: 240 246 252;
-        --secondary: 141 150 160;
-        --muted: 197 197 197;
+        /* Speedtest "Solid" Dark Theme */
+        --background: #141526;     /* Deep Navy Main BG */
+        --card: #1a1b2e;          /* Slightly Lighter Navy Cards */
+        --border: #2f304d;        /* Borders */
+        
+        --primary: #ffffff;       /* Text White */
+        --secondary: #8f92a9;     /* Text Muted Blue-Grey */
+        
+        --accent: #53f6ff;        /* Cyan (DL) */
+        --upload: #b077ff;        /* Purple (UL) */
+        --ping: #eab308;          /* Yellow (Ping) */
       }
 
       body {
-        background-color: rgb(var(--background));
-        color: rgb(var(--primary));
-        font-family: 'Poppins', sans-serif;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      
-      .gradient-blur {
-        background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+        background-color: var(--background);
+        color: var(--primary);
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        overflow-x: hidden;
       }
     </style>
   </head>

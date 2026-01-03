@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { HistoryItem } from '../types';
 
 interface HistoryChartProps {
@@ -7,7 +7,13 @@ interface HistoryChartProps {
 }
 
 const HistoryChart: React.FC<HistoryChartProps> = ({ data }) => {
-  if (data.length === 0) return null;
+  if (data.length === 0) {
+    return (
+        <div className="w-full h-full flex items-center justify-center border-2 border-dashed border-border/30 rounded-lg">
+            <p className="text-secondary text-xs font-bold uppercase tracking-widest">No history data</p>
+        </div>
+    );
+  }
 
   const chartData = data.slice().reverse().map(item => ({
     time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -17,41 +23,56 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data }) => {
   }));
 
   return (
-    // Changed h-64 to h-full min-h-[16rem] to match Grid items
-    <div className="w-full h-full min-h-[16rem] bg-card border-2 border-border rounded-xl p-4 hover:border-primary/20 transition-colors">
-      <h3 className="text-secondary text-xs font-bold uppercase tracking-wider mb-4">Speed History</h3>
-      <ResponsiveContainer width="100%" height="85%">
-        <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(141, 150, 160, 0.2)" vertical={false} />
-          <XAxis 
-            dataKey="time" 
-            stroke="#6b7280" 
-            fontSize={10} 
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis 
-            stroke="#6b7280" 
-            fontSize={10} 
-            tickLine={false}
-            axisLine={false}
-          />
-          <Tooltip 
-            contentStyle={{ 
-              backgroundColor: 'rgb(var(--surface))', 
-              border: '1px solid rgb(var(--border))', 
-              borderRadius: '8px', 
-              fontSize: '12px', 
-              color: 'rgb(var(--primary))' 
-            }}
-            itemStyle={{ padding: '2px 0' }}
-          />
-          <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
-          <Line type="monotone" dataKey="Download" stroke="#818cf8" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-          <Line type="monotone" dataKey="Upload" stroke="#f472b6" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={chartData}>
+        <CartesianGrid strokeDasharray="0" stroke="#24273f" vertical={false} />
+        <XAxis 
+          dataKey="time" 
+          stroke="#535568" 
+          fontSize={10} 
+          tickLine={false}
+          axisLine={false}
+          tick={{ fontWeight: 'bold' }}
+          dy={10}
+        />
+        <YAxis 
+          stroke="#535568" 
+          fontSize={10} 
+          tickLine={false}
+          axisLine={false}
+          tick={{ fontWeight: 'bold' }}
+        />
+        <Tooltip 
+          contentStyle={{ 
+            backgroundColor: '#0a0b12', 
+            border: '1px solid #24273f', 
+            borderRadius: '0px',
+            fontSize: '12px', 
+            color: '#ffffff'
+          }}
+          itemStyle={{ padding: '4px 0', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase' }}
+          cursor={{ stroke: '#535568', strokeWidth: 1 }}
+        />
+        <Line 
+          type="monotone" 
+          dataKey="Download" 
+          stroke="#53f6ff" 
+          strokeWidth={2} 
+          dot={false}
+          activeDot={{ r: 4, fill: '#53f6ff', stroke: '#fff' }} 
+          isAnimationActive={false}
+        />
+        <Line 
+          type="monotone" 
+          dataKey="Upload" 
+          stroke="#b077ff" 
+          strokeWidth={2} 
+          dot={false} 
+          activeDot={{ r: 4, fill: '#b077ff', stroke: '#fff' }} 
+          isAnimationActive={false}
+        />
+      </LineChart>
+    </ResponsiveContainer>
   );
 };
 
